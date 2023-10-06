@@ -1,3 +1,5 @@
+![CI CHECKS](https://github.com/kaserna/yalyceum/actions/workflows/python-package.yml/badge.svg)
+
 # Для запуска проекта в dev-режиме нужно выполнить следующие действия:
 1. Склонировать репозиторий.  
 `git clone https://github.com/kaserna/yalyceum.git`
