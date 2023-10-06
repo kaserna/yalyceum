@@ -13,10 +13,10 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 import os
 from pathlib import Path
 
-from utils import load_env 
+from utils import load_env
 
 get_env = os.environ.get
-BASE_DIR = Path(__file__).parent.parent.parent 
+BASE_DIR = Path(__file__).parent.parent.parent
 load_env(BASE_DIR / "../.env")
 SECRET_KEY = get_env("DJANGO_SECRET_KEY", "secret")
 

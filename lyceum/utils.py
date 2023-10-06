@@ -5,12 +5,15 @@ from pathlib import Path
 
 class FilePermissionError(Exception):
     """The key file permissions are insecure."""
+
     pass
 
 
 quote_match = re.compile(r'''[^"]*"(.+)"''').match
-match_setting = re.compile(r'^(?P<name>[A-Z][A-Z_0-9]+)\s?=\s?(?P<value>.*)').match
-aliases = {'true': True, 'on': True, 'false': False, 'off': False}
+match_setting = re.compile(
+    r"^(?P<name>[A-Z][A-Z_0-9]+)\s?=\s?(?P<value>.*)"
+).match
+aliases = {"true": True, "on": True, "false": False, "off": False}
 
 
 def load_env(path: Path):
@@ -23,17 +26,19 @@ def load_env(path: Path):
     path = path.resolve()
 
     if path.stat().st_mode != 0o100600:
-        raise FilePermissionError(f"Insecure environment file permissions for {path}! Make it 600")
+        raise FilePermissionError(
+            f"Insecure environment file permissions for {path}! Make it 600"
+        )
 
     content = path.read_text()
 
-    for line in content.split('\n'):
+    for line in content.split("\n"):
         line = line.strip()
 
         if not line:
             continue
 
-        if line.startswith('#'):
+        if line.startswith("#"):
             continue
         match = match_setting(line)
 
@@ -51,9 +56,9 @@ def load_env(path: Path):
             value = aliases[name]
 
         # Replace placeholders like ${PATH}
-        for match_replace in re.findall(r'(\${([\w\d\-_]+)})', value):
+        for match_replace in re.findall(r"(\${([\w\d\-_]+)})", value):
             replace, name = match_replace
-            value = value.replace(replace, os.environ.get(name, ''))
+            value = value.replace(replace, os.environ.get(name, ""))
 
         # Set environment value
         os.environ[name] = value
